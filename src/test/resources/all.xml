@@ -1,0 +1,11 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="AllTests">
+    <test name="All Test Suite">
+        <classes>
+            <class name="ParametrizedTests"/>
+            <class name="SimpleTestNGTests"/>
+            <class name="TestLifecycleExample"/>
+            <class name="ParallelTestNGTests"/>
+        </classes>
+    </test>
+</suite>
