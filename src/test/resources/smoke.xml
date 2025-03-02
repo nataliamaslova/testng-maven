@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="SmokeTests">
+    <test name="Smoke Test Suite">
+        <groups>
+            <run>
+                <include name="smoke"/>
+                <exclude name="regress"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="SimpleTestNGTests"/>
+            <class name="ParametrizedTests"/>
+        </classes>
+    </test>
+</suite>
