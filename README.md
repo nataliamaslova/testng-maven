@@ -113,7 +113,7 @@ mvn clean test
             <version>3.0.0-M5</version>
             <configuration>
                 <suiteXmlFiles>
-                    <suiteXmlFile>src/test/resources/${suite}.xml</suiteXmlFile>
+                    <suiteXmlFile>src/test/resources/suites/${suite}.xml</suiteXmlFile>
                 </suiteXmlFiles>
             </configuration>
         </plugin>
@@ -126,8 +126,75 @@ mvn test -Dsuite=regression
 ```
 
 ## 5. Генерация отчетов Allure
+Allure по умолчанию сохраняет результаты тестов в корневой директории проекта. Однако рекомендуется хранить результаты тестов в директории вывода сборки.
+Чтобы настроить это, создайте файл allure.properties и поместите его в директорию ресурсов тестов вашего проекта, которая обычно находится по пути src/test/resources.
+Добавьте туда следующий код:
+```text
+allure.results.directory=target/allure-results
+```
+
 Запустите команду для генерации отчета:
 ```bash
-allure serve
+allure serve target/allure-results
 ```
 Эта команда откроет отчет Allure в вашем браузере. Нужно находиться в папке, которая содержит allure-results.
+
+## 6. Настройка AspectJ
+Allure использует AspectJ для работы аннотаций @Step и @Attachment.
+Кроме того, некоторые интеграции с фреймворками (например, allure-assertj) зависят от интеграции с AspectJ для корректной работы.
+
+Как добавить:
+```xml
+<!-- Define the version of AspectJ -->
+<properties>
+    <aspectj.version>1.9.20.1</aspectj.version>
+</properties>
+
+<!-- Add the following options to your maven-surefire-plugin -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-surefire-plugin</artifactId>
+    <version>3.1.2</version>
+    <configuration>
+        <argLine>
+            -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
+        </argLine>
+    </configuration>
+    <dependencies>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+    </dependencies>
+</plugin>
+```
+
+## 7. Добавление системных переменных
+С помощью блока systemPropertyVariables можно добавлять системные переменные.
+Пример добавленного блока systemPropertyVariables:
+```xml
+<build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <allure.results.directory>target/allure-results</allure.results.directory>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+</build>
+```
+В данном случае, это аналог создания property file allure.properties.
+
+Кроме того, задавать переменные можно и при выполнении через командную строку:
+```bash
+mvn clean test -Dallure.results.directory='target/allure-results'
+```
+
+## Полезные ссылки
+https://allurereport.org/docs/testng/

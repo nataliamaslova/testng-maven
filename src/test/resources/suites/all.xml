@@ -2,6 +2,8 @@
 <suite name="AllTests">
     <test name="All Test Suite">
         <classes>
+            <class name="FractionTests"/>
+            <class name="DeliveryCostTests"/>
             <class name="ParametrizedTests"/>
             <class name="SimpleTestNGTests"/>
             <class name="TestLifecycleExample"/>
