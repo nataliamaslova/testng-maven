@@ -86,28 +86,28 @@ public class DeliveryCostTests {
         };
     }
 
-    @Test(groups = {"negative"}, description = "Impossible delivery: fragile, distance > 30 km",
-    expectedExceptions = UnsupportedOperationException.class,
-            expectedExceptionsMessageRegExp = "Fragile item cannot be delivered for the distance > 30 km")
+    @Test(groups = {"negative"}, description = "Impossible delivery: fragile, distance > 30 km")
     void exceptionTest() {
         DeliveryCost delivery = new DeliveryCost(35, ItemDimension.LARGE, true, NORMAL);
-        delivery.calculateDeliveryCost();
+
+        Assert.assertThrows("Fragile item cannot be delivered for the distance > 30 km",
+                UnsupportedOperationException.class, () -> delivery.calculateDeliveryCost());
     }
 
-    @Test(groups = {"negative"}, description = "Impossible delivery: distance should not be negative",
-            expectedExceptions = IllegalArgumentException.class,
-            expectedExceptionsMessageRegExp = "Distance should not be negative")
+    @Test(groups = {"negative"}, description = "Impossible delivery: distance should not be negative")
     void negativeDistanceTest() {
         DeliveryCost delivery = new DeliveryCost(-1, SMALL, false, Workload.HIGH);
-        delivery.calculateDeliveryCost();
+
+        Assert.assertThrows("Distance should not be negative",
+                IllegalArgumentException.class, () -> delivery.calculateDeliveryCost());
     }
 
-    @Test(groups = {"negative"}, description = "Impossible delivery: too long distance",
-    expectedExceptions = IllegalArgumentException.class,
-    expectedExceptionsMessageRegExp = "Too long distance, please discuss maximal value with Product Owner")
+    @Test(groups = {"negative"}, description = "Impossible delivery: too long distance")
     void tooLongDistanceTest() {
         DeliveryCost delivery = new DeliveryCost(50.1, SMALL, false, Workload.INCREASED);
-        delivery.calculateDeliveryCost();
+
+        Assert.assertThrows("Too long distance, please discuss maximal value with Product Owner",
+                IllegalArgumentException.class, () -> delivery.calculateDeliveryCost());
     }
 }
 

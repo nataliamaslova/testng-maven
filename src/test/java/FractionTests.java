@@ -8,6 +8,7 @@ public class FractionTests {
         Fraction first = new Fraction(1, 2);
         Fraction second = new Fraction(2, 3);
         Fraction expectedSum = new Fraction(7, 6);
+
         Assert.assertEquals(expectedSum, Fraction.sum(first, second));
     }
 
@@ -16,6 +17,7 @@ public class FractionTests {
         Fraction first = new Fraction(-1, 2);
         Fraction second = new Fraction(1, 3);
         Fraction expectedSum = new Fraction(-1, 6);
+
         Assert.assertEquals(expectedSum, Fraction.sum(first, second));
     }
 
@@ -24,25 +26,27 @@ public class FractionTests {
         Fraction first = new Fraction(-1, 2);
         Fraction second = new Fraction(2, 4);
         Fraction expectedSum = new Fraction(0, 8);
+
         Assert.assertEquals(expectedSum, Fraction.sum(first, second));
     }
 
-    @Test(groups = {"negative"}, description = "Zero denominator",
-            expectedExceptions = ArithmeticException.class,
-            expectedExceptionsMessageRegExp = "Cannot divide by zero")
+    @Test(groups = {"negative"}, description = "Zero denominator")
     void zeroDenFractionTest() {
-        new Fraction(1, 0);
+        Assert.assertThrows("Cannot divide by zero",
+                ArithmeticException.class, () -> new Fraction(1, 0));
     }
 
-    @Test(groups = {"negative"}, description = "Nominator and denominator are not defined",
-    expectedExceptions = NullPointerException.class)
+    @Test(groups = {"negative"}, description = "Nominator and denominator are not defined")
     void nullFractionTest() {
-        new Fraction(null, null);
+        Assert.assertThrows("Nominator and denominator are not defined",
+                NullPointerException.class, () -> new Fraction(null, null));
     }
 
     @Test(groups = {"negative"}, description = "Overflow",
     expectedExceptions = ArithmeticException.class)
     void longFractionTest() {
         new Fraction(1, 0);
+        Assert.assertThrows("Overflow",
+                ArithmeticException.class, () -> new Fraction(null, null));
     }
 }

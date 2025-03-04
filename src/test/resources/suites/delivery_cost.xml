@@ -1,6 +1,6 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="DeliveryCostTests">
-    <test name="Delivery Cost Test Suite">
+    <test name="Delivery Cost Test Suite" parallel="methods" thread-count="5">
         <classes>
             <class name="DeliveryCostTests"/>
         </classes>
